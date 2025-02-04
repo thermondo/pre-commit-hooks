@@ -1,0 +1,26 @@
+- id: check-terraform-lock
+  name: check-terraform-lock
+  description: make sure your terraform lock file contains provider hashes for both macOS and linux
+  entry: terraform providers lock -platform=darwin_arm64 -platform=darwin_amd64 -platform=linux_amd64
+  language: system
+  files: .terraform.lock.hcl
+  pass_filenames: false
+- id: terraform-fmt
+  name: terraform-fmt
+  description: autoformat terraform source code
+  entry: bin/terraform-fmt.sh
+  language: script
+  types:
+    - terraform
+- id: ruff-lint
+  name: ruff-lint
+  entry: ruff check . --fix --exit-non-zero-on-fix
+  language: system
+  types:
+    - python
+- id: ruff-format
+  name: ruff-format
+  entry: ruff format .
+  language: system
+  types:
+    - python
