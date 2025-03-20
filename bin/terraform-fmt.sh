@@ -10,16 +10,21 @@
 set -euo pipefail
 
 init() {
-    if command -v gsed &>/dev/null; then
-        SED_CMD="gsed"
+    SED_SCRIPT='/^$/N;/^\n$/D'
+
+    # macOS / Linux incompatibility issues
+    # thanks <https://stackoverflow.com/a/4247319/138757>
+    if [ "$(uname)" == "Linux" ]; then
+        SED_CMD=(sed --in-place "${SED_SCRIPT}")
     else
-        SED_CMD="sed"
+        # assuming macOS for now
+        SED_CMD=(sed -i '' -e "${SED_SCRIPT}")
     fi
 }
 
 main() {
     init
-    $SED_CMD -i '/^$/N;/^\n$/D' "$@"
+    "${SED_CMD[@]}" "$@"
     terraform fmt "$@"
 }
 
