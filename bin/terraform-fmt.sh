@@ -10,21 +10,24 @@
 set -euo pipefail
 
 init() {
-    SED_SCRIPT='/^$/N;/^\n$/D'
-
-    # macOS / Linux incompatibility issues
-    # thanks <https://stackoverflow.com/a/4247319/138757>
-    if [ "$(uname)" == "Linux" ]; then
-        SED_CMD=(sed --in-place "${SED_SCRIPT}")
-    else
-        # assuming macOS for now
-        SED_CMD=(sed -i '' -e "${SED_SCRIPT}")
-    fi
+    AWK_SCRIPT='
+!/^$/ { prev_empty = 0 }
+/^$/ {
+  if (prev_empty) {
+    next  # skip this line
+  }
+  prev_empty = 1
+}
+{ print }
+'
 }
 
 main() {
     init
-    "${SED_CMD[@]}" "$@"
+    for file in "$@"; do
+        cleaned_contents="$(awk "${AWK_SCRIPT}" "${file}")"
+        echo "${cleaned_contents}" > "${file}"
+    done
     terraform fmt "$@"
 }
 
