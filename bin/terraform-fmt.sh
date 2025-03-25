@@ -10,16 +10,24 @@
 set -euo pipefail
 
 init() {
-    if command -v gsed &>/dev/null; then
-        SED_CMD="gsed"
-    else
-        SED_CMD="sed"
-    fi
+    AWK_SCRIPT='
+!/^$/ { prev_empty = 0 }
+/^$/ {
+  if (prev_empty) {
+    next  # skip this line
+  }
+  prev_empty = 1
+}
+{ print }
+'
 }
 
 main() {
     init
-    $SED_CMD -i '/^$/N;/^\n$/D' "$@"
+    for file in "$@"; do
+        cleaned_contents="$(awk "${AWK_SCRIPT}" "${file}")"
+        echo "${cleaned_contents}" > "${file}"
+    done
     terraform fmt "$@"
 }
 
