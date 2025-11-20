@@ -4,6 +4,5 @@ set -euo pipefail
 tflint --init
 SCRIPT_DIR="$(pwd)"
 # NOTE: `tflint` needs the full path to the config file here, otherwise it
-# will only look for the `.tflint.hcl` file in the current working directory,
-# and nowhere else.
+# will look for the `.tflint.hcl` file in every single subdirectory
 tflint --recursive --config="${SCRIPT_DIR}/.tflint.hcl" --fix
