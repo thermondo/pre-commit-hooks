@@ -15,7 +15,7 @@
 
 - id: terraform-lint
   name: terraform-lint
-  description: run `tflint` in your repo. Expects a `.tflint.hcl` in the CWD.
+  description: run `tflint` in your repo. Expects a `.tflint.hcl` in the working directory.
   entry: bin/terraform-lint.sh
   language: script
   pass_filenames: false
