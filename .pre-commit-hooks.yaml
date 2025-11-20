@@ -4,6 +4,7 @@
   entry: bin/check-terraform-lock.sh
   language: script
   files: .terraform.lock.hcl
+
 - id: terraform-fmt
   name: terraform-fmt
   description: autoformat terraform source code
@@ -11,12 +12,23 @@
   language: script
   types:
     - terraform
+
+- id: terraform-lint
+  name: terraform-lint
+  description: run `tflint` in your repo. Expects a `.tflint.hcl` in the working directory.
+  entry: bin/terraform-lint.sh
+  language: script
+  pass_filenames: false
+  types:
+    - terraform
+
 - id: ruff-lint
   name: ruff-lint
   entry: ruff check . --fix --exit-non-zero-on-fix
   language: system
   types:
     - python
+
 - id: ruff-format
   name: ruff-format
   entry: ruff format .
