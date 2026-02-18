@@ -25,10 +25,10 @@
 - id: just-fmt
   name: just-fmt
   description: format `justfile` using `just --unstable --fmt`
-  entry: just --unstable --fmt --justfile
-  language: system
+  entry: bin/just-fmt.sh
+  language: script
   pass_filenames: true
-  files: '^(Justfile|justfile|\.just)$'
+  files: '(^|/)(Justfile|justfile|\.just)$'
 
 - id: ruff-lint
   name: ruff-lint
