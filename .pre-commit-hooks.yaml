@@ -22,6 +22,14 @@
   types:
     - terraform
 
+- id: just-fmt
+  name: just-fmt
+  description: format `justfile` using `just --unstable --fmt`
+  entry: just --unstable --fmt --justfile
+  language: system
+  pass_filenames: true
+  files: '^(Justfile|justfile|\.just)$'
+
 - id: ruff-lint
   name: ruff-lint
   entry: ruff check . --fix --exit-non-zero-on-fix
