@@ -8,10 +8,11 @@ Example usage:
 # .pre-commit-config.yaml in your repository
 repos:
   - repo: https://github.com/thermondo/pre-commit-hooks
-    rev: v1.0.2
+    rev: vX.Y.Z
     hooks:
       - id: check-terraform-lock
       - id: terraform-fmt
+      - id: mypy
       - id: ruff-lint
       - id: ruff-format
 
@@ -36,3 +37,7 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
 ```
+
+The `mypy` hook runs with `require_serial: true` to avoid intermittent
+`database is locked` failures from mypy's sqlite-backed cache when pre-commit
+would otherwise run it concurrently.
