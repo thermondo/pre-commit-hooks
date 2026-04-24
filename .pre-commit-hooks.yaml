@@ -43,3 +43,16 @@
   language: system
   types:
     - python
+
+- id: mypy
+  name: mypy
+  entry: mypy
+  language: system
+  # Mypy uses a sqlite-backed cache; serial execution avoids intermittent
+  # "database is locked" failures when pre-commit would otherwise run it concurrently.
+  require_serial: true
+  args:
+    # Show tracebacks if mypy crashes.
+    - --show-traceback
+  types:
+    - python
